@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* Reset and Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--select-color);
+}
+
+:root {
+  /* Default Theme: Figma Dark */
+  --bg-canvas: #161616;
+  --bg-sidebar: #1e1e1e;
+  --bg-card: #121212;
+  --bg-input: #242424;
+  --border-color: #2c2c2c;
+  --accent-color: #fcc745;
+  --select-color: #0c8ce9;
+  --text-main: #ffffff;
+  --text-muted: #8e8e8e;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Theme Variants */
+[data-theme="white"] {
+  --bg-canvas: #f5f5f5;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f0f0f0;
+  --border-color: #e5e7eb;
+  --accent-color: #0c8ce9;
+  --select-color: #0c8ce9;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+body, .app-container, .sidebar-left, .sidebar-right, .canvas-viewport, .canvas-tabs-bar, .canvas-card-frame, .theme-btn, .frame-tag-header {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Core Layout */
+.app-container {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+}
+
+@media (max-width: 1200px) {
+  .app-container {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Typography Utilities */
+.text-mono {
+  font-family: var(--font-mono);
+}
+
+/* Dot Grid Pattern */
+.canvas-grid {
+  background-image: radial-gradient(var(--border-color) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Glow effects */
+.glow-effect {
+  position: relative;
+}
+.glow-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 15px rgba(252, 199, 69, 0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.glow-effect:hover::before {
+  opacity: 1;
+}
+
+/* Custom Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.btn:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: #000000;
+  border-color: var(--accent-color);
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--accent-color);
+}
+
+/* Micro-animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.pulse-slow {
+  animation: pulse-slow 2s infinite;
+}
+
+/* Floating Toolbar */
+.floating-toolbar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #2c2c2c;
+  border: 1px solid #3c3c3c;
+  border-radius: 9999px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  align-items: center;
+}
+
+.toolbar-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #b3b3b3;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.toolbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.toolbar-item.active {
+  background-color: #0c8ce9;
+  color: #fff;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #3c3c3c;
+  margin: 0 4px;
+}
+
+/* Premium Layout Pills/Buttons for Hero Card */
+.btn-pill-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background-color: #161616;
+  border: 1px solid #161616;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-pill-dark:hover {
+  background-color: #262626;
+  border-color: #262626;
+  transform: scale(1.02);
+}
+
+.btn-pill-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #161616;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-pill-white:hover {
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+  transform: scale(1.02);
+}
+
+/* Glassy effect and tags */
+.tag-item {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
