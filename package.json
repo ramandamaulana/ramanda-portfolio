@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "donate": "node scripts/donate-server.mjs",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },

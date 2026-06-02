@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom SociaBuzz Leaderboard Dynamic</title>
+  <style>
+    :root {
+      --bg: rgba(13, 13, 18, 0.92);
+      --panel: rgba(255, 255, 255, 0.075);
+      --panel-2: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --accent: #f8f8f8;
+      --accent-text: #111111;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 14px;
+    }
+
+    .leaderboard {
+      width: 390px;
+      padding: 20px;
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.15), transparent 36%),
+        linear-gradient(145deg, rgba(22,22,30,.96), rgba(7,7,10,.94));
+      box-shadow: 0 24px 70px rgba(0,0,0,.48);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(16px);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-text);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+
+    .main-title {
+      margin: 12px 0 4px;
+      font-size: 38px;
+      line-height: .96;
+      letter-spacing: -1.5px;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 0 0 17px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-title {
+      margin: 0 0 13px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 900;
+      color: rgba(255,255,255,.88);
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 12px;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .item:nth-child(1) {
+      background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+    }
+
+    .rank {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--panel-2);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .name {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .amount {
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 950;
+      color: rgba(255,255,255,.94);
+    }
+
+    .footer {
+      margin-top: 13px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .error {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <main class="leaderboard">
+    <div class="badge">🕵️ Donatur Terpantau</div>
+    <h1 class="main-title">Belum Jual Ginjal</h1>
+    <p class="subtitle">orang-orang yang mencurigakan baiknya</p>
+
+    <h2 class="source-title" id="sourceTitle">Memuat...</h2>
+    <section class="list" id="list">
+      <div class="status">Lagi ngambil data SociaBuzz. Semoga servernya tidak sedang kontemplasi hidup.</div>
+    </section>
+
+    <div class="footer" id="footer">auto refresh tiap 30 detik</div>
+  </main>
+
+  <script>
+    const API_URL = "/api/leaderboard";
+    const REFRESH_MS = 30000;
+
+    const sourceTitle = document.getElementById("sourceTitle");
+    const list = document.getElementById("list");
+    const footer = document.getElementById("footer");
+
+    function formatRank(index) {
+      if (index === 0) return "🥇";
+      if (index === 1) return "🥈";
+      if (index === 2) return "🥉";
+      return String(index + 1);
+    }
+
+    function render(data) {
+      sourceTitle.textContent = data.title || "Sponsor Kehidupan";
+
+      if (!data.leaderboard.length) {
+        list.innerHTML = `<div class="status">Belum ada data donatur yang kebaca.</div>`;
+        return;
+      }
+
+      list.innerHTML = data.leaderboard.map((item, index) => `
+        <article class="item">
+          <div class="rank">${formatRank(index)}</div>
+          <div class="name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
+          <div class="amount">${escapeHtml(item.amount)}</div>
+        </article>
+      `).join("");
+
+      footer.textContent = `update terakhir: ${new Date().toLocaleTimeString("id-ID")} · auto refresh 30 detik`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    async function fetchLeaderboardData() {
+      const response = await fetch(`${API_URL}?_=${Date.now()}`, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || `API HTTP ${response.status}`);
+      }
+
+      return data;
+    }
+
+    async function loadLeaderboard() {
+      try {
+        const data = await fetchLeaderboardData();
+        render(data);
+      } catch (error) {
+        sourceTitle.textContent = "Gagal ambil data";
+        list.innerHTML = `
+          <div class="status error">
+            HTML ini harus dibuka lewat server/proxy, bukan langsung sebagai file biasa.<br><br>
+            Jalankan <b>npm run donate</b>, lalu buka <b>http://localhost:8787/donate.html</b>.<br><br>
+            Error terakhir: <b>${escapeHtml(error.message)}</b>
+          </div>
+        `;
+        footer.textContent = "data diambil lewat /api/leaderboard";
+        console.error(error);
+      }
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, REFRESH_MS);
+  </script>
+</body>
+</html>
