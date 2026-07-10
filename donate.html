@@ -4,37 +4,22 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Custom SociaBuzz Leaderboard Dynamic</title>
+    <title>Top Donatur – SociaBuzz Leaderboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: rgba(13, 13, 18, 0.92);
-            --panel: rgba(255, 255, 255, 0.075);
-            --panel-2: rgba(255, 255, 255, 0.12);
-            --text: #ffffff;
-            --muted: rgba(255, 255, 255, 0.68);
-            --accent: #f8f8f8;
-            --accent-text: #111111;
-          
-        }
-
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         html,
         body {
-            margin: 0;
-            padding: 0;
             background: transparent;
-             font-family: "Montserrat", sans-serif !important;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-            color: var(--text);
             overflow: hidden;
+            color: #333333;
         }
 
         body {
@@ -46,160 +31,100 @@
         }
 
         .leaderboard {
-            width: min(620px, calc(100vw - 28px));
-            padding: 20px;
-            border-radius: 30px;
-            background:
-                radial-gradient(circle at top left, rgba(255, 255, 255, .15), transparent 36%),
-                linear-gradient(145deg, rgba(22, 22, 30, .96), rgba(7, 7, 10, .94));
-            box-shadow: 0 24px 70px rgba(0, 0, 0, .48);
-            border: 1px solid rgba(255, 255, 255, .14);
-            backdrop-filter: blur(16px);
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 13px;
-            border-radius: 999px;
-            background: var(--accent);
-            color: var(--accent-text);
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: .7px;
-            text-transform: uppercase;
+            width: min(760px, calc(100vw - 28px));
+            background: #faae2b;
+            border-radius: 20px;
+            padding: 30px 45px 35px;
+            box-shadow: 12px 12px 0px #1c1c1c;
+            border: 2px solid #1c1c1c;
+            position: relative;
         }
 
         .main-title {
-            margin: 12px 0 4px;
-            font-size: 38px;
-            line-height: .96;
-            letter-spacing: -1.5px;
-            font-weight: 1000;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            margin: 0 0 17px;
-            color: var(--muted);
-            font-size: 18px;
-        }
-
-        .source-title {
-            margin: 0 0 13px;
+            font-family: 'Comfortaa', cursive, sans-serif;
+            font-size: 30px;
+            line-height: 36px;
+            font-weight: 600;
             text-align: center;
-            font-size: 17px;
-            font-weight: 900;
-            color: rgba(255, 255, 255, .88);
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            color: #333333;
         }
 
         .list {
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            gap: 6px;
+            font-family: 'IBM Plex Mono', monospace;
         }
 
         .item {
             display: grid;
-            grid-template-columns: 34px 1fr auto;
-            align-items: center;
-            gap: 9px;
-            padding: 11px 12px;
-            border-radius: 18px;
-            background: var(--panel);
-            border: 1px solid rgba(255, 255, 255, .08);
-        }
-
-        .item.top-donor {
-            background: linear-gradient(135deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .08));
+            grid-template-columns: 38px 1fr auto;
+            align-items: baseline;
+            gap: 4px;
+            padding: 2px 0;
         }
 
         .rank {
-            width: 30px;
-            height: 30px;
-            display: grid;
-            place-items: center;
-            border-radius: 999px;
-            background: var(--panel-2);
-            font-size: 15px;
-            font-weight: 900;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #333333;
+            white-space: nowrap;
         }
 
         .name {
-            min-width: 0;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #333333;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-size: 15px;
-            font-weight: 850;
+            min-width: 0;
         }
 
         .amount {
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #333333;
+            text-align: right;
             white-space: nowrap;
-            font-size: 14px;
-            font-weight: 950;
-            color: rgba(255, 255, 255, .94);
-        }
-
-        .other-divider {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 13px;
-            margin: 6px 2px 4px;
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .other-divider::before,
-        .other-divider::after {
-            content: "";
-            height: 1px;
-            background: rgba(255, 255, 255, .34);
-        }
-
-        .footer {
-            margin-top: 13px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--muted);
+            font-variant-numeric: tabular-nums;
         }
 
         .status {
-            padding: 16px;
-            border-radius: 18px;
-            background: var(--panel);
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.45;
+            font-family: 'IBM Plex Mono', monospace;
+            padding: 14px 0;
+            font-size: 15px;
+            color: rgba(51, 51, 51, 0.7);
+            text-align: center;
+            position: relative;
         }
 
         .error {
-            color: #fff;
+            color: #7a1a1a;
         }
 
-        @media (max-width: 520px) {
-            .other-divider {
-                gap: 10px;
-            }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .loading-text {
+            animation: blink 1.2s ease-in-out infinite;
         }
     </style>
 </head>
 
 <body>
     <main class="leaderboard">
-        <div class="badge">🕵️ Donatur boleh ngatur</div>
-        <h3 class="main-title">Kamu Kapan🌟?</h3>
-        <p class="subtitle">Yang Nonton Banyak, Yang Ikhlas Sedikit.</p>
-
-        <h2 class="source-title" id="sourceTitle">Memuat...</h2>
+        <h1 class="main-title" id="sourceTitle">Memuat...</h1>
         <section class="list" id="list">
-            <div class="status">Lagi ngambil data SociaBuzz. Semoga servernya tidak sedang kontemplasi hidup.</div>
+            <div class="status loading-text">Mengambil data SociaBuzz...</div>
         </section>
-
-        <div class="footer" id="footer">auto refresh tiap 30 detik</div>
     </main>
 
     <script>
@@ -208,55 +133,38 @@
 
         const sourceTitle = document.getElementById("sourceTitle");
         const list = document.getElementById("list");
-        const footer = document.getElementById("footer");
 
         function formatRank(index) {
-            if (index === 0) return "🥇";
-            if (index === 1) return "🥈";
-            if (index === 2) return "🥉";
-            return String(index + 1);
-        }
-
-        function render(data) {
-            sourceTitle.textContent = data.title || "Sponsor Kehidupan";
-
-            if (!data.leaderboard.length) {
-                list.innerHTML = `<div class="status">Belum ada data donatur yang kebaca.</div>`;
-                return;
-            }
-
-            const topDonors = data.leaderboard.slice(0, 3);
-            const otherDonors = data.leaderboard.slice(3);
-            const topHtml = topDonors.map((item, index) => `
-        <article class="item top-donor">
-          <div class="rank">${formatRank(index)}</div>
-          <div class="name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
-          <div class="amount">${escapeHtml(item.amount)}</div>
-        </article>
-      `).join("");
-            const otherHtml = otherDonors.map((item, index) => `
-        <article class="item">
-          <div class="rank">${index + 4}</div>
-          <div class="name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
-          <div class="amount">${escapeHtml(item.amount)}</div>
-        </article>
-      `).join("");
-
-            list.innerHTML = `
-        ${topHtml}
-        ${otherDonors.length ? `<div class="other-divider">Lainnya</div>${otherHtml}` : ""}
-      `;
-
-            footer.textContent = `update terakhir: ${new Date().toLocaleTimeString("id-ID")} · auto refresh 30 detik`;
+            return `${index + 1}.`;
         }
 
         function escapeHtml(value) {
+            if (value === undefined || value === null) return "";
             return String(value)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        function render(data) {
+            sourceTitle.textContent = data.title || "Top 10 Donatur";
+
+            if (!data.leaderboard || !data.leaderboard.length) {
+                list.innerHTML = `<div class="status">Belum ada data donatur.</div>`;
+                return;
+            }
+
+            const donors = data.leaderboard.slice(0, 10);
+
+            list.innerHTML = donors.map((item, index) => `
+                <article class="item">
+                    <div class="rank">${formatRank(index)}</div>
+                    <div class="name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
+                    <div class="amount">${item.amount ? escapeHtml(item.amount) : ""}</div>
+                </article>
+            `).join("");
         }
 
         async function fetchLeaderboardData() {
@@ -281,13 +189,12 @@
             } catch (error) {
                 sourceTitle.textContent = "Gagal ambil data";
                 list.innerHTML = `
-          <div class="status error">
-            HTML ini harus dibuka lewat server/proxy, bukan langsung sebagai file biasa.<br><br>
-            Jalankan <b>npm run donate</b>, lalu buka <b>http://localhost:8787/donate.html</b>.<br><br>
-            Error terakhir: <b>${escapeHtml(error.message)}</b>
-          </div>
-        `;
-                footer.textContent = "data diambil lewat /api/leaderboard";
+                    <div class="status error">
+                        Buka lewat server: <b>npm run donate</b><br>
+                        lalu akses <b>http://localhost:8787/donate.html</b><br><br>
+                        Error: <b>${escapeHtml(error.message)}</b>
+                    </div>
+                `;
                 console.error(error);
             }
         }
