@@ -1,207 +1,60 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Top Donatur – SociaBuzz Leaderboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html,
-        body {
-            background: transparent;
-            overflow: hidden;
-            color: #333333;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            padding: 14px;
-        }
-
-        .leaderboard {
-            width: min(760px, calc(100vw - 28px));
-            background: #faae2b;
-            border-radius: 20px;
-            padding: 30px 45px 35px;
-            box-shadow: 12px 12px 0px #1c1c1c;
-            border: 2px solid #1c1c1c;
-            position: relative;
-        }
-
-        .main-title {
-            font-family: 'Comfortaa', cursive, sans-serif;
-            font-size: 30px;
-            line-height: 36px;
-            font-weight: 600;
-            text-align: center;
-            letter-spacing: -0.5px;
-            margin-bottom: 24px;
-            color: #333333;
-        }
-
-        .list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .item {
-            display: grid;
-            grid-template-columns: 38px 1fr auto;
-            align-items: baseline;
-            gap: 4px;
-            padding: 2px 0;
-        }
-
-        .rank {
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 400;
-            color: #333333;
-            white-space: nowrap;
-        }
-
-        .name {
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 400;
-            color: #333333;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            min-width: 0;
-        }
-
-        .amount {
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 400;
-            color: #333333;
-            text-align: right;
-            white-space: nowrap;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .status {
-            font-family: 'IBM Plex Mono', monospace;
-            padding: 14px 0;
-            font-size: 15px;
-            color: rgba(51, 51, 51, 0.7);
-            text-align: center;
-            position: relative;
-        }
-
-        .error {
-            color: #7a1a1a;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .loading-text {
-            animation: blink 1.2s ease-in-out infinite;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Supporters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root { --panel:#121214; --deep:#0c0c0e; --line:rgba(255,255,255,.16); --soft:rgba(255,255,255,.10); --text:#f4f4f4; --muted:#a4a4a8; --mono:'Share Tech Mono',monospace; --sans:'DM Sans',sans-serif; --condensed:'Barlow Condensed',sans-serif; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html,body { min-height:100%; }
+    body { min-height:100vh; display:grid; place-items:center; padding:23px 20px 13px; color:var(--text); background:transparent; -webkit-font-smoothing:antialiased; }
+    .leaderboard { width:min(512px,100%); overflow:hidden; border:1px solid rgba(255,255,255,.14); border-radius:17px; background:radial-gradient(ellipse at 15% 0%,rgba(255,255,255,.08),transparent 34%),linear-gradient(145deg,#202023 0%,#151517 42%,#0e0e10 100%); box-shadow:0 12px 20px rgba(0,0,0,.28); }
+    .heading { padding:25px 16px 16px 24px; }
+    .heading-top,.title-row { display:flex; justify-content:space-between; align-items:center; }
+    .live-badge { display:inline-flex; align-items:center; gap:7px; padding:5px 11px 5px 9px; border:1px solid var(--line); border-radius:999px; color:#c3c3c6; font:700 11px/1 var(--condensed); letter-spacing:1.15px; }
+    .live-dot { width:10px; height:10px; border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.13); }
+    .supporters-label { color:#aaaab0; font:600 12px/1 var(--condensed); letter-spacing:.8px; }
+    .title-row { margin-top:27px; }
+    h1 { font:700 24px/.95 var(--condensed); letter-spacing:-.3px; }
+    .subtitle { margin-top:6px; color:#aaaab0; font:500 12px/1.2 var(--sans); }
+    .trophy { width:38px; height:38px; display:grid; place-items:center; border:1px solid var(--line); border-radius:9px; color:white; font-size:18px; line-height:1; }
+    .podium { padding:0 16px 16px; border-bottom:1px solid var(--soft); }
+    .champion { min-height:70px; display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:10px; padding:9px 12px; border:1px solid rgba(255,255,255,.23); border-radius:12px; background:rgba(255,255,255,.035); }
+    .rank-one { width:40px; height:40px; display:grid; place-items:center; border-radius:8px; background:#fbfbfb; color:#151515; font:800 23px/1 var(--condensed); position:relative; }
+    .crown { position:absolute; top:-10px; right:-2px; font-size:14px; transform:rotate(-7deg); }
+    .donor-name { font:700 14px/1 var(--sans); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tag { display:inline-block; margin-left:6px; padding:2px 5px; border-radius:3px; background:#77777a; color:#eeeeef; vertical-align:2px; font:700 9px/1 var(--condensed); letter-spacing:.8px; }
+    .donor-detail { margin-top:5px; color:#b1b1b5; font:13px/1 var(--mono); }
+    .contribution { text-align:right; white-space:nowrap; }.amount { font:700 17px/1 var(--mono); letter-spacing:-.4px; }.contribution small { display:block; margin-top:5px; color:#b1b1b5; font:11px/1 var(--condensed); letter-spacing:.8px; }
+    .second-third { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .mini-card { min-width:0; height:61px; display:grid; grid-template-columns:24px minmax(0,1fr) auto; align-items:center; gap:7px; padding:8px 9px; border:1px solid var(--line); border-radius:8px; background:rgba(0,0,0,.13); }
+    .mini-rank { width:24px; height:24px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); border-radius:4px; color:#d0d0d2; font:700 13px/1 var(--condensed); }.mini-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:700 12px/1 var(--sans); }.mini-detail { margin-top:5px; color:#a9a9ac; white-space:nowrap; font:10px/1 var(--mono); }.mini-amount { font:700 13px/1 var(--mono); white-space:nowrap; }
+    .rank-list { padding:14px 17px 12px 28px; background:linear-gradient(110deg,rgba(255,255,255,.025),transparent 40%); }.list-heading,.row { display:grid; grid-template-columns:29px minmax(0,1fr) auto; align-items:center; }.list-heading { margin-bottom:7px; color:#98989d; font:600 10px/1 var(--condensed); letter-spacing:1.2px; }.list-heading span:last-child { grid-column:3; text-align:right; }.row { min-height:34px; font-family:var(--sans); }.rank { color:#a8a8ad; font:13px/1 var(--mono); }.name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:700 13px/1 var(--sans); }.row .amount { font-size:13px; }
+    .footer { border-top:1px solid var(--soft); background:rgba(0,0,0,.31); }.join { min-height:58px; display:flex; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid var(--soft); }.join-copy { flex:1; color:#d5d5d8; font:600 11px/1.35 var(--sans); }.join-copy b { color:#fff; text-decoration:underline; text-underline-offset:2px; }.join-dot { width:8px; height:8px; flex:none; border-radius:50%; background:#fafafa; }.donate-button { flex:none; padding:7px 8px; border:1px solid #fff; border-radius:4px; background:#fff; color:#161618; font:700 12px/1 var(--mono); }.footer-base { min-height:44px; display:flex; align-items:center; gap:9px; padding:0 17px; color:#aaaab0; font:11px/1 var(--sans); }.qr { font-size:14px; color:#e6e6e7; letter-spacing:-3px; }.streamer { margin-left:auto; color:#f2f2f3; font:700 11px/1 var(--sans); }.arrow { font-size:20px; vertical-align:-2px; margin-left:5px; }.status { padding:26px; color:var(--muted); text-align:center; font:13px var(--mono); }.error { color:#f2aaaa; }
+    @media (max-width:420px) { body { padding:10px; }.heading { padding-left:18px; }.podium { padding-left:10px; padding-right:10px; }.rank-list { padding-left:19px; padding-right:12px; }h1 { font-size:21px; }.mini-card { padding-left:6px; padding-right:6px; gap:5px; }.mini-amount { font-size:11px; } }
+  </style>
 </head>
-
 <body>
-    <main class="leaderboard">
-        <h1 class="main-title" id="sourceTitle">Memuat...</h1>
-        <section class="list" id="list">
-            <div class="status loading-text">Mengambil data SociaBuzz...</div>
-        </section>
-    </main>
-
-    <script>
-        const API_URL = "/api/leaderboard";
-        const REFRESH_MS = 30000;
-
-        const sourceTitle = document.getElementById("sourceTitle");
-        const list = document.getElementById("list");
-
-        function formatRank(index) {
-            return `${index + 1}.`;
-        }
-
-        function escapeHtml(value) {
-            if (value === undefined || value === null) return "";
-            return String(value)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function render(data) {
-            sourceTitle.textContent = data.title || "Top 10 Donatur";
-
-            if (!data.leaderboard || !data.leaderboard.length) {
-                list.innerHTML = `<div class="status">Belum ada data donatur.</div>`;
-                return;
-            }
-
-            const donors = data.leaderboard.slice(0, 10);
-
-            list.innerHTML = donors.map((item, index) => `
-                <article class="item">
-                    <div class="rank">${formatRank(index)}</div>
-                    <div class="name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</div>
-                    <div class="amount">${item.amount ? escapeHtml(item.amount) : ""}</div>
-                </article>
-            `).join("");
-        }
-
-        async function fetchLeaderboardData() {
-            const response = await fetch(`${API_URL}?_=${Date.now()}`, {
-                method: "GET",
-                cache: "no-store"
-            });
-
-            const data = await response.json();
-
-            if (!response.ok || !data.ok) {
-                throw new Error(data.error || `API HTTP ${response.status}`);
-            }
-
-            return data;
-        }
-
-        async function loadLeaderboard() {
-            try {
-                const data = await fetchLeaderboardData();
-                render(data);
-            } catch (error) {
-                sourceTitle.textContent = "Gagal ambil data";
-                list.innerHTML = `
-                    <div class="status error">
-                        Buka lewat server: <b>npm run donate</b><br>
-                        lalu akses <b>http://localhost:8787/donate.html</b><br><br>
-                        Error: <b>${escapeHtml(error.message)}</b>
-                    </div>
-                `;
-                console.error(error);
-            }
-        }
-
-        loadLeaderboard();
-        setInterval(loadLeaderboard, REFRESH_MS);
-    </script>
+  <main class="leaderboard">
+    <header class="heading"><div class="heading-top"><span class="live-badge"><i class="live-dot"></i>LIVE OVERLAY</span><span class="supporters-label">TOP SUPPORTERS</span></div><div class="title-row"><div><h1>TOP 10 MY SOBAT ABU</h1><p class="subtitle">Tahta kemuliaan donatur paling gacor 🔥</p></div><span class="trophy" aria-label="Trophy">♛</span></div></header>
+    <section id="list"><div class="status">Mengambil data donatur...</div></section>
+    <footer class="footer"><div class="join"><i class="join-dot"></i><p class="join-copy">Mau namamu nangkring di sini? <b>Mulai IDR 5.000!</b></p><span class="donate-button">!donate</span></div><div class="footer-base"><span class="qr">▦</span><span>Scan QRIS / Trakteer / Saweria</span><span class="streamer">Dukung Streamer <b class="arrow">›</b></span></div></footer>
+  </main>
+  <script>
+    const API_URL = "/api/leaderboard", REFRESH_MS = 30000, list = document.getElementById("list");
+    function escapeHtml(value) { return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+    function donor(item, fallbackName = "—") { return { name:escapeHtml(item?.name || fallbackName), amount:escapeHtml(item?.amount || "IDR 0") }; }
+    function render(data) {
+      const donors = (data.leaderboard || []).slice(0,10); if (!donors.length) { list.innerHTML='<div class="status">Belum ada data donatur.</div>'; return; }
+      const [first,second,third,...rest] = donors.map(donor);
+      list.innerHTML = `<div class="podium"><article class="champion"><span class="rank-one">1<i class="crown">♛</i></span><div><p class="donor-name">${first.name}<span class="tag">SULTAN UTAMA</span></p><p class="donor-detail">Penguasa Tahta Klasemen</p></div><div class="contribution"><p class="amount">${first.amount}</p><small>MAHA DONATUR</small></div></article><div class="second-third">${second?`<article class="mini-card"><span class="mini-rank">2</span><div><p class="mini-name">${second.name}</p><p class="mini-detail">Runner Up</p></div><span class="mini-amount">${second.amount}</span></article>`:''}${third?`<article class="mini-card"><span class="mini-rank">3</span><div><p class="mini-name">${third.name}</p><p class="mini-detail">MVP Bronze</p></div><span class="mini-amount">${third.amount}</span></article>`:''}</div></div><section class="rank-list"><div class="list-heading"><span>RANK</span><span>&amp; DONATUR</span><span>KONTRIBUSI</span></div>${rest.map((item,index)=>`<article class="row"><span class="rank">${index+4}.</span><span class="name">${item.name}</span><span class="amount">${item.amount}</span></article>`).join('')}</section>`;
+    }
+    async function loadLeaderboard() { try { const response=await fetch(`${API_URL}?_=${Date.now()}`,{cache:"no-store"}), data=await response.json(); if(!response.ok||!data.ok) throw new Error(data.error||`API HTTP ${response.status}`); render(data); } catch(error) { list.innerHTML='<div class="status error">Gagal memuat data donatur.</div>'; console.error(error); } }
+    loadLeaderboard(); setInterval(loadLeaderboard,REFRESH_MS);
+  </script>
 </body>
-
 </html>
